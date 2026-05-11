@@ -1,87 +1,87 @@
-# Konut Fiyat Analizi Otomasyonu
+# Housing Price Analysis Automation
 
-Bu proje, secilen 3 sehir icin konut verisini toplar/dogrular, istatistiksel analizleri calistirir ve rapor ciktilarini otomatik uretir.
-Arayuz `Streamlit` uzerinden calisir; rapor ciktilari Excel ve Word formatinda uretilir.
+This project collects and validates housing data for 3 selected cities, runs statistical analyses, and automatically generates report outputs.
+The interface runs on `Streamlit`, and reports are produced in Excel and Word formats.
 
-## Ozellikler
+## Features
 
-- 3 farkli sehir secimi ve dogrulama
-- Excel ile toplu veri yukleme (`data/templates/input_template.xlsx`)
-- Form uzerinden manuel satir girisi
-- Otomatik veri dogrulama (zorunlu alanlar + min 30 kayit/sehir)
-- Istatistik analizleri ve grafik uretimi
-- Excel paket cikti ve Word rapor olusturma
+- Selection and validation of 3 different cities
+- Bulk data upload via Excel (`data/templates/input_template.xlsx`)
+- Manual row entry through the form
+- Automatic data validation (required fields + minimum 30 records per city)
+- Statistical analysis and chart generation
+- Bundled Excel output and Word report generation
 
-## Gereksinimler
+## Requirements
 
-- Python 3.10+ (onerilen)
-- Windows (exe/setup paketleme adimlari icin)
+- Python 3.10+ (recommended)
+- Windows (for exe/setup packaging steps)
 
-Kurulum:
+Installation:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-## Uygulamayi Calistirma
+## Run the Application
 
-Gelistirme modunda:
+In development mode:
 
 ```bash
 python -m streamlit run app.py
 ```
 
-Alternatif:
+Alternative:
 
 ```bash
 python launcher.py
 ```
 
-Uygulama varsayilan olarak `http://localhost:8501` adresinde acilir.
+By default, the app opens at `http://localhost:8501`.
 
-## Kullanim Akisi
+## Usage Flow
 
-1. 3 farkli sehri secip onaylayin.
-2. Veriyi Excel ile yukleyin veya manuel satir ekleyin.
-3. Veri onizleme ve kayit sayilarini kontrol edin.
-4. Analizi calistirin.
-5. Excel/Word ciktilarini indirin.
+1. Select and confirm 3 different cities.
+2. Upload data via Excel or add manual rows.
+3. Check data preview and record counts.
+4. Run the analysis.
+5. Download Excel/Word outputs.
 
-## Hizli Test (Smoke Test)
+## Quick Test (Smoke Test)
 
 ```bash
 python smoke_test.py
 ```
 
-Bu komut sahte veri ile tum analiz ve rapor hattini uctan uca test eder.
+This command runs an end-to-end test of the full analysis and reporting pipeline using synthetic data.
 
-## Paketleme (Windows)
+## Packaging (Windows)
 
-### EXE olusturma
+### Build EXE
 
 ```powershell
 .\build_exe.ps1
 ```
 
-Uretilen dosya:
+Generated file:
 
 ```text
 dist/StatisticApp.exe
 ```
 
-### Setup olusturma
+### Build Setup
 
 ```powershell
 .\build_setup.ps1
 ```
 
-Uretilen dosya:
+Generated file:
 
 ```text
 installer-dist/StatisticApp-Setup.exe
 ```
 
-## Proje Yapisi
+## Project Structure
 
 ```text
 Statistic/
@@ -100,6 +100,6 @@ Statistic/
     `-- data_ingestion.py
 ```
 
-## GitHub icin Not
+## Note for GitHub
 
-Depoya sadece kaynak kodu ve gerekli temel dosyalar eklenmelidir. Uretilen ciktilar ve yerel dokumanlar `.gitignore` ile dislanmistir.
+Only source code and essential project files should be committed. Generated outputs and local documentation assets are excluded via `.gitignore`.
