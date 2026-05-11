@@ -6,6 +6,7 @@ from pathlib import Path
 
 from docx import Document
 from docx.shared import Inches
+from docx.shared import Pt
 
 from src.analysis.statistics import AnalysisResults
 from src.reporting.narratives import build_report_narratives
@@ -51,7 +52,6 @@ def _add_table(doc: Document, title: str, rows: list[list[str]]) -> None:
 
 
 def _add_part2_calculation_steps(doc: Document, ci_df) -> None:
-    doc.add_heading("[Part 2 - Calculation Steps] — Statistical Notes", level=3)
     rows = [["metric", "confidence", "mean", "std", "n", "t_crit", "margin", "formula", "interval"]]
     for row in ci_df.itertuples(index=False):
         metric = str(getattr(row, "metric", "Metric"))
@@ -76,7 +76,15 @@ def _add_part2_calculation_steps(doc: Document, ci_df) -> None:
                 f"[{low:,.4f}, {high:,.4f}] {'TL' if metric == 'Price' else 'm²'}",
             ]
         )
-    _add_table(doc, "Part 2 - Confidence Interval Calculation Trace", rows)
+    if len(rows) <= 1:
+        return
+    doc.add_heading("[Part 2 - Calculation Steps] — Statistical Notes", level=3)
+    doc.add_paragraph(
+        "The table below summarizes each confidence-interval calculation step "
+        "(sample mean, standard deviation, sample size, critical value, margin of error, and final interval).",
+        style="Normal",
+    )
+    _add_table(doc, "Part 2 - Calculation Steps", rows)
 
 
 def _add_interpretations(doc: Document, section_title: str, comments: list[str]) -> None:
@@ -105,11 +113,28 @@ def _add_section_charts(doc: Document, title: str, charts: list[Path]) -> None:
             doc.add_picture(str(chart_path), width=Inches(6))
 
 
+def _apply_global_typography(doc: Document) -> None:
+    def format_paragraph(paragraph) -> None:
+        paragraph.paragraph_format.line_spacing = 1.5
+        for run in paragraph.runs:
+            run.font.name = "Times New Roman"
+            run.font.size = Pt(12)
+
+    for paragraph in doc.paragraphs:
+        format_paragraph(paragraph)
+
+    for table in doc.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                for paragraph in cell.paragraphs:
+                    format_paragraph(paragraph)
+
+
 def _charts_for_part(chart_paths: list[Path], part: str) -> list[Path]:
     selected: list[Path] = []
     for chart in chart_paths:
         name = chart.name.lower()
-        if part == "part1" and ("price_hist" in name or "price_box" in name or "area_hist" in name):
+        if part == "part1" and ("price_hist" in name or "price_box" in name or "area_hist" in name) and "anova" not in name:
             selected.append(chart)
         elif part == "part3" and name.startswith("part3_"):
             selected.append(chart)
@@ -197,6 +222,7 @@ def export_word_report(
     _add_section_charts(doc, "Part 6 - Charts", _charts_for_part(chart_paths, "part6"))
 
     _add_interpretations(doc, "Overall Evaluation", narratives.general_summary)
+    _apply_global_typography(doc)
 
     doc.save(output_path)
     return output_path
