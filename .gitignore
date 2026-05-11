@@ -1,0 +1,35 @@
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# Local IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build and installer outputs
+build/
+dist/
+installer-dist/
+*.exe
+*.msi
+
+# App runtime outputs
+outputs/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Unnecessary local documentation assets
+document_pdf.pdf
+proje_plani.html
